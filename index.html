@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Untuk Kamu</title>
 
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Satisfy&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,56 +16,94 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #ff9a9e, #fad0c4 30%, #fbc2eb 60%, #a18cd1 100%);
       min-height: 100vh;
+      background: radial-gradient(circle at top, #ffe1f0, #fbc2eb 35%, #a18cd1 80%);
+      font-family: "Poppins", system-ui, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 380px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
-      padding: 22px 18px 18px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
-      position: relative;
+      padding: 18px;
       overflow: hidden;
     }
 
-    /* bubble dekor */
-    .bubble {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0));
-      opacity: 0.7;
-      filter: blur(2px);
-      z-index: -1;
-      animation: float 10s infinite alternate ease-in-out;
+    /* HEART PARTICLES */
+    .floating-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
-    .bubble.b1 { top: -40px; left: -40px; }
-    .bubble.b2 { bottom: -50px; right: -50px; animation-delay: 2s; }
 
-    @keyframes float {
-      from { transform: translateY(0) translateX(0); }
-      to { transform: translateY(-22px) translateX(16px); }
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      opacity: 0;
+      animation: floatHeart 8s linear infinite;
+    }
+
+    .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 30%; animation-delay: 2s; }
+    .heart:nth-child(3) { left: 50%; animation-delay: 4s; }
+    .heart:nth-child(4) { left: 70%; animation-delay: 1s; }
+    .heart:nth-child(5) { left: 85%; animation-delay: 3s; }
+
+    @keyframes floatHeart {
+      0%   { transform: translateY(40px) scale(0.8); opacity: 0; }
+      20%  { opacity: 0.9; }
+      80%  { opacity: 0.9; }
+      100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+    }
+
+    /* CARD */
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 26px;
+      padding: 22px 18px 20px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.18),
+        0 0 0 1px rgba(255,255,255,0.8);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.7), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .corner-heart {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 20px;
+      animation: pulse 1.4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.15); }
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255, 111, 145, 0.12);
+      font-size: 11px;
+      background: rgba(255,111,145,0.12);
       color: #c2185b;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .pill-dot {
@@ -76,13 +117,14 @@
       font-size: 10px;
       color: #999;
       text-align: right;
-      margin-top: -6px;
+      margin-top: -4px;
       margin-bottom: 4px;
     }
 
+    /* SLIDES AREA */
     .slides-wrapper {
       position: relative;
-      min-height: 210px;
+      min-height: 230px;
       margin-top: 6px;
     }
 
@@ -90,60 +132,82 @@
       position: absolute;
       inset: 0;
       opacity: 0;
-      transform: translateY(24px) scale(0.96);
+      transform: translateX(40px) translateY(10px) scale(0.95);
       transition: opacity 0.45s ease, transform 0.45s ease;
       pointer-events: none;
     }
 
     .slide.active {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateX(0) translateY(0) scale(1);
       pointer-events: auto;
     }
 
     h2 {
       font-size: 22px;
       margin-bottom: 8px;
+      line-height: 1.25;
     }
 
-    .name-gradient {
-      background: linear-gradient(120deg, #ff6f91, #ff9770, #ffcd70);
+    .script-name {
+      font-family: "Satisfy", cursive;
+      font-size: 26px;
+      background: linear-gradient(120deg,#ff6f91,#ff9770,#ffcd70);
       -webkit-background-clip: text;
       color: transparent;
-      font-weight: 700;
     }
 
     p {
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
       color: #444;
     }
 
     .list {
       margin-top: 6px;
     }
+    .list p { margin-bottom: 4px; }
 
-    .list p {
-      margin-bottom: 4px;
+    /* TEXT ANIMATIONS INSIDE SLIDE */
+    .slide h2,
+    .slide p {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .slide.active h2 {
+      animation: textUp 0.5s ease forwards;
+    }
+    .slide.active p {
+      animation: textUp 0.6s ease forwards;
+      animation-delay: 0.15s;
+    }
+    .slide.active .list p:nth-child(2) { animation-delay: 0.25s; }
+    .slide.active .list p:nth-child(3) { animation-delay: 0.35s; }
+    .slide.active .list p:nth-child(4) { animation-delay: 0.45s; }
+
+    @keyframes textUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .btn {
-      margin-top: 18px;
+      margin-top: 16px;
       width: 100%;
       border: none;
       border-radius: 999px;
       padding: 9px 14px;
-      background: linear-gradient(135deg, #ff6f91, #ff9770);
+      background: linear-gradient(135deg,#ff6f91,#ff9770);
       color: #fff;
       font-weight: 600;
       font-size: 13px;
-      box-shadow: 0 10px 20px rgba(255, 111, 145, 0.5);
+      box-shadow: 0 10px 20px rgba(255,111,145,0.55);
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 6px 14px rgba(255, 111, 145, 0.4);
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 6px 14px rgba(255,111,145,0.4);
     }
 
     .btn-link {
@@ -156,20 +220,20 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .dot {
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.12);
+      background: rgba(0,0,0,0.16);
       transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .dot.active {
       background: #ff6f91;
-      transform: scale(1.4);
+      transform: scale(1.5);
     }
 
     .tiny-note {
@@ -179,107 +243,105 @@
       color: #999;
     }
 
-    .corner-heart {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 20px;
-      animation: pulse 1.4s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%,100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+    @media (max-width: 360px) {
+      .card { padding: 18px 14px 18px; border-radius: 22px; }
+      h2 { font-size: 20px; }
     }
   </style>
 </head>
 <body>
 
-<div class="card" id="card">
-  <div class="bubble b1"></div>
-  <div class="bubble b2"></div>
+<!-- HEART PARTICLES -->
+<div class="floating-hearts">
+  <div class="heart">❤️</div>
+  <div class="heart">💖</div>
+  <div class="heart">💗</div>
+  <div class="heart">💕</div>
+  <div class="heart">💘</div>
+</div>
 
+<div class="card" id="card">
   <div class="corner-heart">💌</div>
 
   <div class="pill">
     <div class="pill-dot"></div>
     <span>Untuk kamu yang lagi baca ini</span>
   </div>
-
-  <div class="tap-hint">tap kartu / tekan tombol untuk next ⏭️</div>
+  <div class="tap-hint">tap kartu / tombol buat next ⏭️</div>
 
   <div class="slides-wrapper">
 
-    <!-- SLIDE 1 – SAPAAN -->
+    <!-- SLIDE 1 -->
     <div class="slide active">
-      <h2>Hai,queen 👋🏻👋🏻 <span class="name-gradient"><!-- GANTI DI SINI: NAMA DIA -->queensha</span> 👋</h2>
+      <h2>Hai, <span class="script-name"><!-- GANTI: nama dia -->queensha</span> 👋</h2>
       <p>
-        <!-- GANTI DI SINI: PEMBUKA SINGKAT -->
-        Aku gak jago ngomong langsung, jadi aku tulis semuanya di sini. Tenang, cuma kamu yang tau halaman ini.
+        <!-- GANTI: kalimat pembuka -->
+        Aku nggak jago ngomong langsung, jadi aku tulis semuanya di sini. Halaman ini cuma buat kamu.
       </p>
-      <button class="btn" onclick="nextSlide(event)">Mulai bacanya ➜</button>
+      <button class="btn" onclick="nextSlide(event)">Mulai ceritanya ➜</button>
     </div>
 
-    <!-- SLIDE 2 – ALASAN HALAMAN -->
+    <!-- SLIDE 2 -->
     <div class="slide">
       <h2>Kenapa aku bikin ini</h2>
       <p>
-        <!-- GANTI DI SINI -->
-        Jujur, setiap hari aku mikir: “Ngomong gak ya? Bilang gak ya?”  
-        Sampai akhirnya aku mutusin buat bikin satu tempat kecil yang isinya cuma tentang kamu.
+        <!-- GANTI -->
+        Jujur, beberapa kali aku pengen ngomong tapi selalu berhenti di kepala.  
+        Jadi aku bikin satu tempat kecil yang isinya semua hal yang nggak pernah sempet aku bilang ke kamu.
       </p>
-      <button class="btn" onclick="nextSlide(event)">Next ➜</button>
+      <button class="btn" onclick="nextSlide(event)">Lanjut ➜</button>
     </div>
 
-    <!-- SLIDE 3 – YANG DISUKA -->
+    <!-- SLIDE 3 -->
     <div class="slide">
       <h2>Yang aku suka dari kamu</h2>
       <div class="list">
-        <!-- GANTI DI SINI: POIN-POIN TENTANG DIA -->
-        <p>❤️ Caramu ketawa bisa bikin kepala aku auto replay seharian.</p>
-        <p>❤️ Kamu keliatan capek tapi tetep berusaha, dan itu bikin aku kagum.</p>
-        <p>❤️ Kamu baik sama orang-orang di sekitar kamu, bahkan untuk hal-hal kecil.</p>
-        <p>❤️ Kalau ada kamu, suasananya kerasa beda. Lebih hidup aja.</p>
+        <!-- GANTI POIN-POIN -->
+        <p>❤️ Cara kamu ketawa bisa bikin mood aku keangkat tiba-tiba.</p>
+        <p>❤️ Kamu tetap berusaha meskipun kelihatan capek, dan itu bikin aku kagum.</p>
+        <p>❤️ Kamu baik sama orang-orang di sekitar kamu, bahkan di hal-hal kecil.</p>
+        <p>❤️ Kalau ada kamu, suasananya kerasa beda. Lebih hangat, lebih hidup.</p>
       </div>
-      <button class="btn" onclick="nextSlide(event)">Next ➜</button>
+      <button class="btn" onclick="nextSlide(event)">Lanjut ➜</button>
     </div>
 
-    <!-- SLIDE 4 – PENGAKUAN -->
+    <!-- SLIDE 4 -->
     <div class="slide">
       <h2>Jujur aja...</h2>
       <p>
-        <!-- GANTI DI SINI: PENGAKUAN INTI -->
+        <!-- GANTI JIKA MAU -->
         Aku suka sama kamu. Bukan cuma karena kamu kelihatan menyenangkan dari luar,
-        tapi karena semakin aku memperhatiin, semakin kelihatan banyak hal baik di diri kamu.
+        tapi karena setiap kali aku memperhatiin, selalu ada hal baik baru yang aku temuin di diri kamu.
       </p>
       <p style="margin-top:6px;">
-        Aku gak nuntut kamu buat bales apa-apa. Aku cuma pengen kamu tau kalau ada seseorang yang beneran menganggap kamu itu spesial.
+        Aku nggak maksa kamu buat bales apa pun. Aku cuma pengen kamu tau, ada seseorang yang beneran
+        menganggap kamu itu spesial.
       </p>
-      <button class="btn" onclick="nextSlide(event)">Next ➜</button>
+      <button class="btn" onclick="nextSlide(event)">Slide terakhir ➜</button>
     </div>
 
-    <!-- SLIDE 5 – PENUTUP + LINK CHAT -->
+    <!-- SLIDE 5 -->
     <div class="slide">
       <h2>Terima kasih udah baca 💫</h2>
       <p>
-        <!-- GANTI DI SINI: PESAN PENUTUP -->
-        Apapun respon kamu nanti, aku tetap seneng banget karena kamu udah mau baca sampai sini.
+        <!-- GANTI PENUTUP -->
+        Apapun respon kamu nanti, aku tetap seneng banget karena kamu udah mau baca sampai akhir.
       </p>
       <p style="margin-top:6px;">
-        Dunia kamu mungkin sama aja seperti sebelumnya, cuma sekarang kamu tau,
-        ada satu orang yang senang bisa kenal kamu.
+        Dunia kamu mungkin masih sama, cuma sekarang kamu tau,
+        ada satu orang yang diam-diam bahagia banget bisa kenal kamu.
       </p>
 
-      <!-- GANTI DI SINI: LINK CHAT (WA / IG) -->
-      <a class="btn btn-link" href="https://wa.me/6287883510382" target="_blank" rel="noopener">
-        Kalau mau ngomong, chat aku di sini 💭
+      <!-- GANTI: LINK CHAT (WA / IG) -->
+      <a class="btn btn-link" href="https://wa.me/62XXXXXXXXXXX" target="_blank" rel="noopener">
+        Kalau mau ngobrol, chat aku di sini 💭
       </a>
     </div>
 
   </div>
 
   <div class="progress-dots">
-    <!-- Kalau tambah / kurang slide, pastiin jumlah .dot sama -->
+    <!-- jumlah .dot harus sama dengan jumlah slide -->
     <div class="dot active"></div>
     <div class="dot"></div>
     <div class="dot"></div>
@@ -288,47 +350,33 @@
   </div>
 
   <div class="tiny-note">
-    (Tap di mana saja di kartu ini buat next.)
+    (Tap di mana saja di kartu buat next.)
   </div>
 </div>
-
-<!-- OPSIONAL: MUSIK LATAR -->
-<!--
-<audio id="bgm" loop>
-  <source src="MUSIK_KAMU.mp3" type="audio/mpeg">
-</audio>
--->
 
 <script>
   let slideIndex = 0;
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
   const card = document.getElementById('card');
-  const bgm = document.getElementById('bgm');
 
   function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('active', i === index);
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === index);
     });
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === index);
     });
   }
 
   function nextSlide(event) {
-    // biar kalau klik tombol, gak ke-trigger 2x dari event kartu
-    if (event) event.stopPropagation();
-
+    if (event) event.stopPropagation(); // biar nggak double dari click card
     slideIndex = (slideIndex + 1) % slides.length;
     showSlide(slideIndex);
-
-    // kalau mau musik mulai pas pertama kali next, bisa aktifkan ini:
-    // if (bgm && bgm.paused) bgm.play().catch(() => {});
   }
 
   // tap di mana saja di kartu = next
   card.addEventListener('click', function(e) {
-    // kalau yang diklik tombol / link, biarin fungsi tombol yang jalan
     if (e.target.closest('button') || e.target.closest('a')) return;
     nextSlide();
   });
